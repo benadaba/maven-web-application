@@ -1,40 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+	<!-- build triggers -->
 	<groupId>com.mt</groupId>
 	<artifactId>maven-web-application</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.2-SNAPSHOT</version>
+	
+	<version>0.0.2-SNAPSHOT</version> 
 	
 	<name>maven-web-application</name>
 
 	<description>Maven Web Project for Java Project</description>
 
 	<organization>
-		<name>DataPandas Technologies</name>
-		<url>http://datapandas.com/</url>
+		<name>DataPandas</name>
 	</organization>
 
-	<properties>
-		<jdk.version>1.8</jdk.version>
-		<spring.version>5.1.2.RELEASE</spring.version>
-		<junit.version>4.11</junit.version>
-		<log4j.version>1.2.17</log4j.version>
-		<sonar.host.url>http://18.171.136.66:9000/</sonar.host.url>
-		<sonar.login>admin</sonar.login>
-		<sonar.password>admin</sonar.password>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-	</properties>
-	<repositories>
-	       <repository>
-	       <id>nexus</id>
-		<name>nexus proxy repo</name>
-		<url>http://35.176.80.39:8081/repository/barclays-proxy/</url>
-	       </repository>
-	</repositories>
+        <properties>
+                <jdk.version>1.8</jdk.version>
+                <spring.version>5.1.2.RELEASE</spring.version>
+                <junit.version>4.11</junit.version>
+                <log4j.version>1.2.17</log4j.version>
+                <sonar.host.url>http://18.171.136.66:9000/</sonar.host.url>
+                <sonar.login>admin</sonar.login>
+                <sonar.password>admin</sonar.password>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        </properties>
 
 	<dependencies>
 		
@@ -96,28 +88,26 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
-		</dependency>
-		
-	</dependencies>
-	
-	<distributionManagement>
-	
-	    <repository>
-	      <id>nexus</id>
-	      <name>DataPandas Releases Nexus Repository</name>
-	      <url>http://13.42.21.228:8081/repository/cicd-santander-release/</url>
-	    </repository>
-	    
-	    <snapshotRepository>
-	      <id>nexus</id>
-	      <name>DataPandas Snapshot Nexus Repository </name>
-	      <url>http://13.42.21.228:8081/repository/cicd-santander-snapshot/</url>
-	    </snapshotRepository>
-	    
-	</distributionManagement>
+		</dependency>	
+	</dependencies>	
+
+  <distributionManagement>
+      <repository>
+        <id>nexus</id>
+        <name>DataPandas Releases Nexus Repository</name>
+        <url>http://98.81.159.237:8081/repository/barclays-releases/</url>
+      </repository>
+      
+      <snapshotRepository>
+        <id>nexus</id>
+        <name>DataPandas Snapshot Nexus Repository </name>
+        <url>http://98.81.159.237:8081/repository/barclays-snapshots/</url>
+      </snapshotRepository>
+      
+  </distributionManagement>
 	
 	<build>
-		<finalName>santanader-bank-app</finalName>
+		<finalName>barclays</finalName>
 		
 		<plugins>
 			<plugin>
@@ -153,22 +143,9 @@
 					<wtpContextName>maven-web-application</wtpContextName>
 				</configuration>
 			</plugin>
-                 <!--
-			 <plugin>
-                                <groupId>org.sonarsource.scanner.maven</groupId>
-                                <artifactId>sonar-maven-plugin</artifactId>
-                                <version>3.9.1.2184</version>
-
-                        </plugin>
-	      -->
-			<plugin>
-      <groupId>org.sonarsource.scanner.maven</groupId>
-      <artifactId>sonar-maven-plugin</artifactId>
-      <version>4.9.0.7153</version> <!-- Update this to the latest -->
-    </plugin>
-
 			
 </plugins>
 	</build>
+	
 	
 </project>
