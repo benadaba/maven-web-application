@@ -41,6 +41,26 @@ on:
           - nothing
 
 jobs:
+  manual-approval:
+    runs-on: ubuntu-latest
+    needs: build-run-docker-image
+    steps:
+      - name: Waiting for manual approval
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const { Octokit } = require("@octokit/core");
+            const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.pull_request.number;
+            const approval = await octokit.request('POST /repos/{owner}/{repo}/issues/{issue_number}/comments', {
+              owner,
+              repo,
+              issue_number,
+              body: 'Please approve this workflow to proceed with the deployment.'
+            });
+            console.log(approval);
   build:
     runs-on: ubuntu-latest
 
