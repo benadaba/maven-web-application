@@ -41,9 +41,8 @@ on:
           - nothing
 
 jobs:
-  manual-approval:
+  manual-approval1:
     runs-on: ubuntu-latest
-    needs: build-run-docker-image
     steps:
       - name: Waiting for manual approval
         uses: actions/github-script@v3
@@ -61,6 +60,7 @@ jobs:
               body: 'Please approve this workflow to proceed with the deployment.'
             });
             console.log(approval);
+            
   build:
     runs-on: ubuntu-latest
 
