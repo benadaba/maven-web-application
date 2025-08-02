@@ -44,15 +44,15 @@ node {
         }
         
      }
-        stage("12. DeployToApplicationServer-PROD"){
+    
+    stage("12. DeployToApplicationServer-PROD"){
         deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
 
      stage("10. Notifications to stakeholders"){
         emailext body: '''We are building the full enterprise project for barclays bank plc. This the production pipeline. Please check the progress of this pipeline in this email.
 
-Thank
-DataPandas DevOps Consultant''', recipientProviders: [buildUser(), culprits(), developers(), brokenBuildSuspects()], subject: 'Please check progress of the build', to: 'barcalys@datapandas.com'
+        Thank
+        DataPandas DevOps Consultant''', recipientProviders: [buildUser(), culprits(), developers(), brokenBuildSuspects()], subject: 'Please check progress of the build', to: 'barcalys@datapandas.com'
     }
      }
-   }
