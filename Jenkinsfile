@@ -53,6 +53,6 @@ node {
         emailext body: '''We are building the full enterprise project for barclays bank plc. This the production pipeline. Please check the progress of this pipeline in this email.
 
         Thank
-        DataPandas DevOps Consultant''', recipientProviders: [buildUser(), culprits(), developers(), brokenBuildSuspects()], subject: 'Please check progress of the build', to: 'barcalys@datapandas.com'
+        DataPandas DevOps Consultant''', recipientProviders: [buildUser(), culprits(), developers(), brokenBuildSuspects()], subject: 'Please check progress of the build', to: 'cs@datapandas.com'
     }
      }
