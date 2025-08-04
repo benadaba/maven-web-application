@@ -20,39 +20,46 @@ node {
         sh "${mavenHome}/bin/mvn package"
         //sh "${mavenHome}/bin/mvn -B -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dmaven.test.failure.ignore=true clean package"
      }
-     stage("06. Integration (mvn verify)"){
+      stage("06. Test(FunctionalTest)"){
+        sh "${mavenHome}/bin/mvn test"
+     }
+     stage("07. Integration test (mvn verify)"){
         sh "${mavenHome}/bin/mvn verify"
         //sh "${mavenHome}/bin/mvn -B -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dmaven.test.failure.ignore=true clean verify"
      }
-     stage("07. CodeQualityAnalysis"){
+      stage("08. Test(RegressionTest)"){
+        sh "${mavenHome}/bin/mvn test"
+     }
+     stage("09. CodeQualityAnalysis"){
         sh "${mavenHome}/bin/mvn sonar:sonar"
         //  sh "${mavenHome}/bin/mvn sonar:sonar -Dsonar.projectKey=maven-web-application -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin"
      }
-     stage("08. UploadArtifacts"){
+     stage("10. UploadArtifacts"){
         sh "${mavenHome}/bin/mvn deploy"
      }
-     stage("09. DeployToApplicationServer-DEV"){
-        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
+     stage("11. DeployToApplicationServer-DEV"){
+        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
 
-      stage("10. DeployToApplicationServer-STAGING"){
-        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
+      stage("12. DeployToApplicationServer-STAGING"){
+        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
-     stage("11. ApprovalGate"){
+     stage("13. ApprovalGate"){
         timeout(activity: true, time: 30, unit: 'SECONDS') {
              input message: "Do you want to proceed with the deployment to Production?", ok: "Yes, proceed"
         }
         
      }
     
-    stage("12. DeployToApplicationServer-PROD"){
-        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
+    stage("14. DeployToApplicationServer-PROD"){
+        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
 
-     stage("10. Notifications to stakeholders"){
+     stage("15. Notifications to stakeholders"){
         emailext body: '''We are building the full enterprise project for barclays bank plc. This the production pipeline. Please check the progress of this pipeline in this email.
 
         Thank
         DataPandas DevOps Consultant''', recipientProviders: [buildUser(), culprits(), developers(), brokenBuildSuspects()], subject: 'Please check progress of the build', to: 'cs@datapandas.com'
     }
-     }
+}
+   
