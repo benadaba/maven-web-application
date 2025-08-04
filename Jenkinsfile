@@ -32,11 +32,11 @@ node {
         sh "${mavenHome}/bin/mvn deploy"
      }
      stage("09. DeployToApplicationServer-DEV"){
-        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
+        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
 
       stage("10. DeployToApplicationServer-STAGING"){
-        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
+        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
      stage("11. ApprovalGate"){
         timeout(activity: true, time: 30, unit: 'SECONDS') {
@@ -46,7 +46,7 @@ node {
      }
     
     stage("12. DeployToApplicationServer-PROD"){
-        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://35.179.182.227:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
+        deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, onFailure: false, war: 'target/*war'
      }
 
      stage("10. Notifications to stakeholders"){
