@@ -13,7 +13,7 @@ node {
         sh "${mavenHome}/bin/mvn validate"
         //sh "${mavenHome}/bin/mvn -B -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dmaven.test.failure.ignore=true clean verify"
      }
-     stage("04. Test(UnitTest+Functional+RegressionTest)"){
+     stage("04. Test(UnitTest)"){
         sh "${mavenHome}/bin/mvn test"
      }
      stage("05. Build"){
