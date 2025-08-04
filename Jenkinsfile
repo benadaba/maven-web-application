@@ -21,7 +21,7 @@ pipeline {
                 //sh "mvn -B -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dmaven.test.failure.ignore=true clean verify"
             }
         }
-        stage("04. Test(UnitTest+Functional+RegressionTest"){
+        stage("04. Test(UnitTest)"){
             steps{
                 sh "mvn test"
             }
@@ -32,46 +32,56 @@ pipeline {
                 //sh "mvn -B -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dmaven.test.failure.ignore=true clean package"
             }
         }
-        stage("06. Integration test (mvn verify)"){
+         stage("06. Test(FunctionalTest)"){
+            steps{
+                sh "mvn test"
+            }
+        }
+        stage("07. Integration test (mvn verify)"){
             steps{
                 sh "mvn verify"
                 //sh "mvn -B -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Djacoco.skip=true -Dfindbugs.skip=true -Dmaven.test.failure.ignore=true clean verify"
             }
         }
-        stage("07. CodeQualityAnalysis"){
+         stage("08. Test(RegressionTest)"){
+            steps{
+                sh "mvn test"
+            }
+        }
+        stage("09. CodeQualityAnalysis"){
             steps{
                 sh "mvn sonar:sonar"
                 //sh "mvn sonar:sonar -Dsonar.projectKey=maven-web-application -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin"
             }
         }
-        stage("08. UploadArtifacts"){
+        stage("10. UploadArtifacts"){
             steps{
                 sh "mvn deploy"
             }
         }
-        stage("09. DeployToApplicationServer-DEV"){
+        stage("11. DeployToApplicationServer-DEV"){
             steps{
                 deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, war: 'target/*war'
             }
         }
-        stage("10. DeployToApplicationServer-STAGING"){
+        stage("12. DeployToApplicationServer-STAGING"){
             steps{
                 deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, war: 'target/*war'
             }
         }
-        stage("11. ApprovalGate"){
+        stage("13. ApprovalGate"){
             steps{
                 timeout(time: 30, unit: 'SECONDS') {
                     input message: "Do you want to proceed with the deployment to Production?", ok: "Yes, proceed"
                 }
             }
         }
-         stage("12. DeployToApplicationServer-PROD"){
+         stage("14. DeployToApplicationServer-PROD"){
             steps{
                 deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://18.133.223.231:8080/')], contextPath: null, war: 'target/*war'
             }
         }
-        stage("13. Notifications to stakeholders"){
+        stage("15. Notifications to stakeholders"){
             steps{
                 emailext body: '''We are building the full enterprise project for barclays bank plc. This the production pipeline. Please check the progress of this pipeline in this email.
 
