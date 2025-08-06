@@ -3,7 +3,7 @@ pipeline {
     tools {
         maven "maven3910"
     }
- /* key stuff 'stages' */
+ /* key stuff 'stages'  */
     stages{
         stage("01. GetCode"){ 
           steps{
