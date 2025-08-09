@@ -1,5 +1,5 @@
 node{
-      def mavenHome = tool name: "maven386"
+      def mavenHome = tool name: "maven3910"
      stage("1GetCode"){
         git branch: 'main', url: 'https://github.com/benadaba/maven-web-application'   
      }
