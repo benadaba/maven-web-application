@@ -117,7 +117,7 @@
   </distributionManagement>
 	
 	<build>
-		<finalName>barclays</finalName>
+		<finalName>BritishAirways</finalName>
 		
 		<plugins>
 			<plugin>
