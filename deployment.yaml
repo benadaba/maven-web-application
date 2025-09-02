@@ -17,7 +17,7 @@ spec:
       - name: maven-cicd-container
         image: datapandassandbox/maven-web-app-contanerized-cicd:10
         ports:
-        - containerPort: 8080
+        - containerPort: 8080 #container port
 ---
 apiVersion: v1
 kind: Service
