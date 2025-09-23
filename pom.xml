@@ -105,13 +105,13 @@
       <repository>
         <id>nexus</id>
         <name>DataPandas Releases Nexus Repository</name>
-        <url>http://18.130.140.31:8081/repository/natwest-releases/</url>
+        <url>http://3.8.153.173:8081/repository/natwest-releases/</url>
       </repository>
       
       <snapshotRepository>
         <id>nexus</id>
         <name>DataPandas Snapshot Nexus Repository </name>
-        <url>http://18.130.140.31:8081/repository/natwest-snapshots/</url>
+        <url>http://3.8.153.173:8081/repository/natwest-snapshots/</url>
       </snapshotRepository>
       
   </distributionManagement>
