@@ -1,0 +1,132 @@
+pipeline {
+
+   agent any 
+   tools {
+     maven "maven3910"
+   }
+   stages{
+    
+    // get code from github
+     stage("01. GetCode"){
+        steps{
+           git branch: 'main', url: 'https://github.com/benadaba/maven-web-application.git'
+        }   
+     }
+
+     //clean the targetDirect
+     stage("02. cleanTarget"){
+        steps {
+            sh "mvn clean"
+        }
+     }
+
+    //
+    stage("03. Validate"){
+        steps {
+            sh "mvn validate"
+        }
+    }
+
+    //unit testting
+    stage("04. Unittest"){
+        steps{
+            sh "mvn test"
+        }
+    }
+
+    //Build
+    stage("05. Build"){
+        steps{
+            sh "mvn package"
+        }
+    }
+
+    // integration tests and functional tests
+    stage("06. IntegrationTest"){
+        steps{
+            sh "mvn verify"
+        }
+    }
+
+    //regression test
+    stage("07. Test(RegressionTest)"){
+        steps{
+            sh "mvn test"
+        }
+    }
+
+    //code quality analysis
+    stage("08. CodeQualityAnalysis"){
+        steps{
+            sh "mvn sonar:sonar"
+        }
+    }
+
+    // upload artifacts to nexus
+    stage("09. UploadArtifacts"){
+        steps{
+            sh "mvn deploy"
+        }
+    }
+
+ // upload application .war to tomcat server - DEV
+    stage("10. DeployToApplicationServer-Dev"){
+        steps{
+            deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://52.56.217.123:8080/')], contextPath: null, war: 'target/*war'
+        }
+    }
+
+// upload application .war to tomcat server - STAGING
+    stage("11. DeployToApplicationServer-STAGING"){
+        steps{
+            deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://52.56.217.123:8080/')], contextPath: null, war: 'target/*war'
+        }
+    }
+
+// Approval Gate
+    stage("12. ApprovalGate"){
+        steps{
+            timeout(time: 30, unit: 'SECONDS') {
+                    input message: "Do you want to proceed to Production", ok: "Yes, Proceed"
+                }
+        }
+    }
+
+
+// upload application .war to tomcat server - PROD
+    stage("13. DeployToApplicationServer-PROD"){
+        steps{
+            deploy adapters: [tomcat8(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://52.56.217.123:8080/')], contextPath: null, war: 'target/*war'
+        }
+    }
+
+    //send notifications
+    stage("14. Notifications to stakeholders"){
+        steps{
+            emailext body: 'Please check this email and act accordingly', 
+            recipientProviders: [contributor(), developers(), previous()], 
+            replyTo: 'cs@datapandas.com', 
+            subject: 'We are building the full pipeline', 
+            to: 'cs@datapandas.com'
+
+        }
+
+    }
+
+   }
+
+
+   post{
+        always{
+            sh "echo this is ALWAYS RUNNING"
+            
+        }
+        success {
+            sh "echo JOB WAS SUCCESSFULL!!!"
+        }
+        failure {
+            sh "echo JOB FAILED!!!"
+        }
+   }
+
+}
